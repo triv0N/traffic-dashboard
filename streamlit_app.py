@@ -15,8 +15,13 @@ st.set_page_config(
 
 @st.cache_resource
 def init_connection():
-    # Update this with your same connection string
-    DB_URL = "postgresql://postgres:frwFu0aFGgge74QQ@db.daiunfjtxrwurgexiodd.supabase.co:5432/postgres"
+    try:
+        # Try to get from Streamlit secrets first
+        DB_URL = st.secrets["database_url"]
+    except:
+        # Fallback for local development
+        DB_URL = "postgresql://postgres:frwFu0aFGgge74QQ@db.daiunfjtxrwurgexiodd.supabase.co:5432/postgres"
+    
     return create_engine(DB_URL)
 
 @st.cache_data(ttl=300)
